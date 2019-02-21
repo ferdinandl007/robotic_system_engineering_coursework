@@ -12,24 +12,44 @@ def testShow(to_show):
     cv2.imshow('',to_show)
     cv2.waitKey(0)
 
-# source: what Baxter sees (currently an image from my webcam)
+# source: image from my webcam
+# H, S, V found manually
+# PINK_MIN = np.array([143,22,211], np.uint8)
+# PINK_MAX = np.array([178,244,255], np.uint8)
+# RED_MIN = np.array([0,5,0], np.uint8)
+# RED_MAX = np.array([2,255,255], np.uint8)
+# ORANGE_MIN = np.array([4, 126, 143], np.uint8)
+# ORANGE_MAX = np.array([17, 255, 255], np.uint8)
+# YELLOW_MIN = np.array([25,88,0], np.uint8)
+# YELLOW_MAX = np.array([39,255,255], np.uint8)
+# GREEN_MIN = np.array([37,33,0], np.uint8)
+# GREEN_MAX = np.array([74,255,255], np.uint8)
+# BLUE_MIN = np.array([87,71,0], np.uint8)
+# BLUE_MAX = np.array([106,255,255], np.uint8)
+# DARKBLUE_MIN = np.array([110,167,0], np.uint8)
+# DARKBLUE_MAX = np.array([135,255,255], np.uint8)
+# WOOD_MIN =  np.array([14,19,0], np.uint8)
+# WOOD_MAX =  np.array([31,110,255], np.uint8)
+
+# source: image from Baxter's camera
 # H, S, V found manually
 PINK_MIN = np.array([143,22,211], np.uint8)
 PINK_MAX = np.array([178,244,255], np.uint8)
-RED_MIN = np.array([0,5,0], np.uint8)
-RED_MAX = np.array([2,255,255], np.uint8)
-ORANGE_MIN = np.array([4, 126, 143], np.uint8)
-ORANGE_MAX = np.array([17, 255, 255], np.uint8)
-YELLOW_MIN = np.array([25,88,0], np.uint8)
-YELLOW_MAX = np.array([39,255,255], np.uint8)
-GREEN_MIN = np.array([37,33,0], np.uint8)
-GREEN_MAX = np.array([74,255,255], np.uint8)
-BLUE_MIN = np.array([87,71,0], np.uint8)
+RED_MIN = np.array([0,145,0], np.uint8)
+RED_MAX = np.array([4,255,255], np.uint8)
+ORANGE_MIN = np.array([4, 137, 0], np.uint8)
+ORANGE_MAX = np.array([14, 255, 255], np.uint8)
+YELLOW_MIN = np.array([19,115,0], np.uint8)
+YELLOW_MAX = np.array([35,255,255], np.uint8)
+GREEN_MIN = np.array([43,47,0], np.uint8)
+GREEN_MAX = np.array([77,255,255], np.uint8)
+BLUE_MIN = np.array([89,71,0], np.uint8)
 BLUE_MAX = np.array([106,255,255], np.uint8)
-DARKBLUE_MIN = np.array([110,167,0], np.uint8)
-DARKBLUE_MAX = np.array([135,255,255], np.uint8)
-WOOD_MIN =  np.array([14,19,0], np.uint8)
-WOOD_MAX =  np.array([31,110,255], np.uint8)
+DARKBLUE_MIN = np.array([106,71,0], np.uint8)
+DARKBLUE_MAX = np.array([149,255,255], np.uint8)
+WOOD_MIN =  np.array([0,0,143], np.uint8)
+WOOD_MAX =  np.array([35,107,255], np.uint8)
+
 
 hsv_manual = {
     'pink': [PINK_MIN,PINK_MAX],

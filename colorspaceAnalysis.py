@@ -1,5 +1,6 @@
 import cv2, time, argparse, glob
 import numpy as np
+import os
 
 # SOURCE: https://github.com/spmallick/learnopencv/blob/master/ColorSpaces/interactiveColorSegment.py
 
@@ -16,7 +17,7 @@ def onTrackbarActivity(x):
 if __name__ == '__main__':
 
     # Get the filename from the command line
-    files = glob.glob('tower.jpg')
+    files = glob.glob(os.path.join('baxter_camera.png'))
     files.sort()
     # load the image
     original = cv2.imread(files[0])
