@@ -4,6 +4,7 @@ import numpy as np
 import  os
 import glob
 opencv_2 = cv2.__version__.startswith('2')
+import skvideo.io
 import blobDetection as bd
 import disksArrangement as da
 import Disk
@@ -11,45 +12,21 @@ import Board
 
 
 #######################################################################################################################
-## test with image
-# img = cv2.imread('tower.jpg')
-# bd.getBoundingBoxes(img,bd.hsv_manual,'hsv')
-
-#######################################################################################################################
-## test with webcam
-# cap = cv2.VideoCapture(0)
-# while(True):
-#
-#    # delay
-#     for i in range(20):
-#         print('')
-#
-#     ret, img = cap.read()
-#     bd.getBoundingBoxes(img, bd.hsv_manual, 'hsv')
-#     cv2.imshow('frame', img)
-#
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         break
-#
-# # When everything done, release the capture
-# cap.release()
-# cv2.destroyAllWindows()
-
-
-#######################################################################################################################
 ## test with baxters camera
-cap = cv2.VideoCapture('baxter_video.avi')
-# Read until video is completed
-while (cap.isOpened()):
-    # Capture frame-by-frame
-    ret, img = cap.read()
-    if ret == True:
+
+def testVideo():
+
+    cap = skvideo.io.vreader('baxter_video.avi')
+    # Read until video is completed
+    for img in cap:
+        img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
 
         # Display the resulting frame
+        # img = bd.preprocessImage(img) # if this is not used anymore, also change the hsv values from blobDetection
         cv2.imshow('Frame', img)
 
-        # Get blobs coordinates, info
-        centers_x,centers_y,widths,heights,rotations,found_colors = bd.getBoundingBoxes(img, bd.hsv_manual, 'hsv')
+        # Get blobs/boxes coordinates, info
+        centers_x,centers_y,widths,heights,rotations,found_colors,contours = bd.getBoundingBoxes(img, hsv_baxter,hanoi_colors)
 
         # Construct disks and empty board
         disks_list = da.make_disks(centers_x, centers_y, widths, heights, rotations, found_colors)
@@ -74,14 +51,36 @@ while (cap.isOpened()):
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
 
-    # Break the loop
-    else:
-        break
+        print('')
 
-# When everything done, release the video capture object
-cap.release()
-
-# Closes all the frames
-cv2.destroyAllWindows()
+        # Draw boxes
+        bd.drawBoxes(img, contours, found_colors)
 
 
+    # Closes all the frames
+    cv2.destroyAllWindows()
+
+
+if __name__=="__main__":
+
+    # 1) color calibration
+    hanoi_colors = ['pink','red','orange','yellow','green','blue','dark blue']
+    img = cv2.imread('centeredTower.png')
+    img2 = cv2.imread('centeredTower.png')
+    preproc_calib_img = False
+    # hsv offset needs to be adjusted depending on the colors used (ex: smaller if both blue and dark blue used)
+    hsv_offset = 3
+    bgr_baxter = bd.getBGRavgColorsFromBaxter(img,hanoi_colors,preproc_calib_img,True)
+    hsv_baxter = bd.calibrateColors(bgr_baxter,hsv_offset)
+
+    # 2) blobs detection
+
+    # # preprocess frames if needed
+    # img = bd.preprocessImage(img)
+
+    # # get bounding box info
+    # centers_x,centers_y,widths,heights,rotations,found_colors,contours = bd.getBoundingBoxes(img, hsv_baxter, hanoi_colors)
+    # # draw boxes
+    # bd.drawBoxes(img2, contours, found_colors)
+
+    testVideo()

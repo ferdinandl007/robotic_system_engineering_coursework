@@ -1,6 +1,7 @@
 import cv2, time, argparse, glob
 import numpy as np
 import os
+import blobDetection as bd
 
 # SOURCE: https://github.com/spmallick/learnopencv/blob/master/ColorSpaces/interactiveColorSegment.py
 
@@ -21,6 +22,10 @@ if __name__ == '__main__':
     files.sort()
     # load the image
     original = cv2.imread(files[0])
+
+    # preprocess image
+    original = bd.preprocessImage(original)
+
     # Resize the image
     rsize = 250
     original = cv2.resize(original, (rsize, rsize))

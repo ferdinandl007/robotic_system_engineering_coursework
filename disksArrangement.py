@@ -9,7 +9,7 @@ opencv_2 = cv2.__version__.startswith('2')
 
 
 def make_disks(centers_x,centers_y,widths,heights,rotations,found_colors):
-    disks = []
+    disks = [] # disk objects will be arranged in the order of found_colors
     for d in range(len(centers_x)):
         disks.append(Disk.Disk(centers_x[d],centers_y[d],widths[d],heights[d],rotations[d],found_colors[d]))
     return disks
@@ -28,7 +28,11 @@ def getBoardLayout(img, disks, board):
     tower_left = []
     tower_middle = []
     tower_right = []
+
+    # arrange disks on towers, but not in decreasing order yet
     for disk in disks:
+        # use QR code result to detect positions!
+
         # disk belonds to left tower
         if disk.center_x < segment_size:
             tower_left.append(disk)
