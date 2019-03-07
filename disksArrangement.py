@@ -3,17 +3,41 @@ import cv2
 print(cv2.__version__)
 import numpy as np
 import  os
-import Disk
-import Board
 opencv_2 = cv2.__version__.startswith('2')
 
 
-def make_disks(centers_x,centers_y,widths,heights,rotations,found_colors):
-    disks = [] # disk objects will be arranged in the order of found_colors
-    for d in range(len(centers_x)):
-        disks.append(Disk.Disk(centers_x[d],centers_y[d],widths[d],heights[d],rotations[d],found_colors[d]))
-    return disks
 
+
+def printBoard(board):
+    print('Left tower:')
+    for l in reversed(board.left_tower):
+        print('['+l.color+'] ')
+    print('Middle tower:')
+    for m in reversed(board.middle_tower):
+        print('['+m.color+'] ')
+    print('Right tower:')
+    for r in reversed(board.right_tower):
+        print('['+r.color+'] ')
+    print('########################################')
+
+
+def getDiskInd(col, disks_list):
+    for i,e in enumerate(disks_list):
+        if e.color == col:
+            return i
+    return -1   # for colorname not found
+
+
+def updateDetectedDisks(all_disks, centers_x, centers_y, widths, heights, rotations, found_colors):
+    print(len(found_colors))
+    for c in range(len(found_colors)):
+        index_disk = getDiskInd(found_colors[c], all_disks) # get the index of disk in the initial list
+        all_disks[index_disk].center_x = centers_x[c]
+        all_disks[index_disk].center_y = centers_y[c]
+        all_disks[index_disk].width = widths[c]
+        all_disks[index_disk].height = heights[c]
+        all_disks[index_disk].rotation = rotations[c]
+    return all_disks
 
 
 def getBoardLayout(img, disks, board):
@@ -58,3 +82,31 @@ def getBoardLayout(img, disks, board):
         board.right_tower.append(d)
 
     return board
+
+
+def boardChanged(old_board, new_board):
+    """Compares the states of the new and olf board. Returns True if they are the same, False otherwise"""
+
+    # compare lengths of towers
+    if len(old_board.left_tower) != len(new_board.left_tower):
+        return True
+
+    if len(old_board.middle_tower) != len(new_board.middle_tower):
+        return True
+
+    if len(old_board.right_tower) != len(new_board.right_tower):
+        return True
+
+    # compare colors within towers
+    for a,b in zip(old_board.left_tower,new_board.left_tower):
+        if a.color != b.color:
+            return True
+    for a,b in zip(old_board.middle_tower,new_board.middle_tower):
+        if a.color != b.color:
+            return True
+    for a,b in zip(old_board.right_tower,new_board.right_tower):
+        if a.color != b.color:
+            return True
+
+    # if we get to this point, towers haven't changed
+    return False

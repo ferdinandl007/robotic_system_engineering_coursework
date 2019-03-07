@@ -331,10 +331,10 @@ def getBGRavgColorsFromBaxter(img,color_names,preprocess,save):
 
     nr_disks = len(color_names)                 # number of disks
     disk_height = int(img_h/(nr_disks+15))      # disk height (trial and error)
-    disk_width = int(img_w/7)                   # disk width
+    disk_width = int(img_w/15)                   # disk width
     min_y = img_margin + int(disk_height/2)     # minimum y coord of a disk
     max_y = img_h - min_y                       # maximum y coord of a disk
-    inter_space = 35                            # distance between ellipses (trial and error)
+    inter_space = 25                            # distance between ellipses (trial and error)
     disks_y_coord = []                          # from top disk to bottom disk
     color = (255,255,255)                       # ellipse initial color
     bgr_baxter = {}                             # found BGR values
@@ -362,6 +362,8 @@ def getBGRavgColorsFromBaxter(img,color_names,preprocess,save):
         # compute average color under mask
         num_pixels = np.count_nonzero(color_mask)
         b,g,r = cv2.split(img_masked)
+
+
         b_avg = int(np.sum(b)/num_pixels)
         g_avg = int(np.sum(g)/num_pixels)
         r_avg = int(np.sum(r)/num_pixels)
@@ -375,8 +377,8 @@ def getBGRavgColorsFromBaxter(img,color_names,preprocess,save):
 
         # draw filled ellipse with average color under color mask
         cv2.ellipse(img, (center_x, disks_y_coord[d]), (disk_width, disk_height), 0, 0, 360, color=color, thickness=-1)
-        cv2.imshow('ellipse',img)
-        cv2.waitKey(0)
+    cv2.imshow('Ellipses',img)
+    # cv2.waitKey(0)
 
     return bgr_baxter
 
@@ -481,6 +483,6 @@ def drawBoxes(img,contours,found_colors):
     # Display original image and finals masks
     stacked_masks = np.zeros(img.shape, np.uint8)
     cv2.drawContours(stacked_masks, contours, -1, (255, 255, 255), -1)
-    cv2.imshow('Original',img)
+    cv2.imshow('Bounding boxes',img)
     cv2.imshow('Masks', stacked_masks)
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
