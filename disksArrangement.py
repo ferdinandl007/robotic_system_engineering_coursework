@@ -81,29 +81,35 @@ def getBoardLayout(img, disks, board):
     for d in tower_right:
         board.right_tower.append(d)
 
+    return board
 
 
-    print('')
-    array_disks_pos = []
-    array_colors = []
-    array_ids = []
-    for f in board.left_tower:
-        array_disks_pos.append(0)
-        array_colors.append(f.color)
-        array_ids.append(f.id)
+def getTowerIndex(disk_size,board):
+    # disk is on left tower
+    for l in board.left_tower:
+        if l.size == disk_size:
+            return 0
+    # disk is on middle tower
     for m in board.middle_tower:
-        array_disks_pos.append(1)
-        array_colors.append(m.color)
-        array_ids.append(m.id)
+        if m.size == disk_size:
+            return 1
+    # disk is on right tower
     for r in board.right_tower:
-        array_disks_pos.append(2)
-        array_colors.append(r.color)
-        array_ids.append(r.id)
+        if r.size == disk_size:
+            return 2
+    # if nowhere
+    return -1
 
+def getBoardEncoding(board,MAX_NUM_DISKS):
+    # uses the configuration presented at
+    # https://stackoverflow.com/questions/49220476/tower-of-hanoi-solving-halfway-algorithm-in-python/49221643#49221643
+    structure = []
 
-    print('')
-    return board,array_disks_pos, array_colors, array_ids
-
+    for s in range(MAX_NUM_DISKS-1,-1,-1):
+        ind = getTowerIndex(s, board)
+        if ind != -1:
+            structure.append(ind)
+    return structure
 
 
 def boardChanged(old_board, new_board):
