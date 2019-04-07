@@ -1,4 +1,4 @@
-#
+# source: https://stackoverflow.com/a/49221643
 # Solve Towers of Hanoi from arbitrary position
 #
 # diskPostions -- the current peg for each disk (0, 1, or 2) in decreasing
@@ -6,6 +6,9 @@
 # largestToMove -- move this one and all smaller disks
 # targetPeg -- target peg for disks to move
 #
+
+
+moves = []
 def moveDisks(diskPositions, largestToMove, targetPeg):
     for badDisk in range(largestToMove, len(diskPositions)):
 
@@ -20,6 +23,8 @@ def moveDisks(diskPositions, largestToMove, targetPeg):
             moveDisks(diskPositions, badDisk+1, otherPeg)
 
             print "Move ", badDisk, " from ", currentPeg, " to ", targetPeg
+            move_string = "Move "+str(badDisk)+" from "+str(currentPeg)+" to "+str(targetPeg)
+            moves.append(move_string)
             diskPositions[badDisk]=targetPeg
 
             #now we can put the smaller ones in the right place
@@ -30,4 +35,7 @@ def moveDisks(diskPositions, largestToMove, targetPeg):
 
 if __name__ == "__main__":
     moveDisks([2, 1, 0, 2], 0, 2)
+    print(moves)
+
+
 

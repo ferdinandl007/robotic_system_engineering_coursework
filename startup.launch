@@ -1,0 +1,39 @@
+<launch>
+
+    <param name="hanoi_colors" type="string" value="green,red,yellow" />
+    <node pkg="my_baxter" name="camera_cv2_baxter_head" type="readCamera.py"/>
+
+    <!--blob detection controller-->
+    <node pkg="my_baxter" name="blobDetectionController" type="blobDetectionController.py" output="screen">
+    </node>
+
+
+    <!--board recognition controller-->
+    <node pkg="my_baxter" name="boardRecognitionController" type="boardRecognitionController.py">
+    </node>
+
+
+    <!--move validity checker-->
+    <node pkg="my_baxter" name="moveValidityChecker" type="moveValidityChecker.py">
+    </node>
+
+
+    <!--board change controller-->
+    <node pkg="my_baxter" name="boardChangeController" type="boardChangeController.py">
+    </node>
+
+
+
+    <node pkg="my_baxter" name="correctMoveAlgorithm" type="correctMoveAlgorithm.py"/>
+
+    <node pkg="my_baxter" name="incorrectMoveAlgorithm" type="incorrectMoveAlgorithm.py"/>
+
+    <node pkg="my_baxter" name="missingDiskAlgorithm" type="missingDiskAlgorithm.py"/>
+
+    <node pkg="my_baxter" name="illegalMoveCounter" type="illegalMoveController.py"/>
+
+
+
+</launch>
+
+

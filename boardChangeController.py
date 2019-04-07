@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+import sys
 from my_baxter.msg import Board
 from my_baxter.msg import FilteredBoard
 from my_baxter.msg import Disk
@@ -20,10 +21,10 @@ opencv_2 = cv2.__version__.startswith('2')
 
 # initializations
 MAX_NUM_DISKS = 10      # maximum number of disks to play with
-# string_col = sys.argv[1]
-# string_col = 'pink,red,orange,yellow,green,dark_green'
+# string_col = rospy.get_param("/hanoi_colors")
 string_col = 'green,red,yellow'
 hanoi_colors = string_col.split(',')
+# string_col = 'pink,red,orange,yellow,green,dark_green'
 MAX_WINDOW_SIZE = 10     # the number of states across which votes for position are counted
 MIN_NUM_VOTES = 7       # minimum number of votes for a position to be valid
 board_data_history = Queue(maxsize=MAX_WINDOW_SIZE)     # will hold the states (FIFO)
@@ -200,7 +201,7 @@ if __name__ == "__main__":
     rospy.init_node('boardChangeController', anonymous=True)
 
     # create subscriber to the board state topic
-    board_state_sub = rospy.Subscriber('/hanoi/boardState',Board,callbackBoardState)
+    boardStateSub = rospy.Subscriber('/hanoi/boardState', Board, callbackBoardState)
 
     #prevents program from exiting, allowing subscribers and publishers to keep operating
     #in our case that is the camera subscriber and the image processing callback function

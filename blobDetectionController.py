@@ -17,8 +17,9 @@ print(cv2.__version__)
 # TODO make this node start only after all calibrations are done ????
 # colors need to be calibrated well, atm they are all grey
 
-
-# string_col = sys.argv[1]
+# to get a global param use "/paramname"
+# to get a local param use "/nodename/paramname"
+# string_col = rospy.get_param("/hanoi_colors")
 # string_col = 'pink,red,orange,yellow,green,dark_green'
 string_col = 'green,red,yellow'
 hsv_offset = 10
@@ -110,7 +111,7 @@ if __name__ == '__main__':
     # calib_sub = rospy.Subscriber('/hanoi/colorCalibration',Bool,callback)    
 
     # create subscriber to the right hand camera
-    camera_sub = rospy.Subscriber('/cameras2/right_hand_camera/image',Image,callback)
+    cameraSub = rospy.Subscriber('/cameras2/right_hand_camera/image', Image, callback)
 
     # prevents program from exiting, allowing subscribers and publishers to keep operating
     # in our case that is the camera subscriber and the image processing callback function

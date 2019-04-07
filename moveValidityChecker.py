@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+import sys
 from sensor_msgs.msg import Image
 from std_msgs.msg import Int8
 from my_baxter.msg import Board
@@ -22,14 +23,16 @@ opencv_2 = cv2.__version__.startswith('2')
 
 
 # initializations
-# string_col = sys.argv[1]
-# string_col = 'pink,red,orange,yellow,green,dark_green'
+# string_col = rospy.get_param("/hanoi_colors")
 string_col = 'green,red,yellow'
 hanoi_colors = string_col.split(',')
+# string_col = 'pink,red,orange,yellow,green,dark_green'
 initial_colors = hanoi_colors
 previous_board = None
 last_valid_board = None
 missing_disk_color = None
+
+# NOTE: if gameRunning is 0, initial colors should be reinitialized
 
 # publishes move validity to validMove topic
 # 1 = move is correct (cardinality kept, same disk colors across states) [probable]
@@ -195,10 +198,10 @@ if __name__ == "__main__":
     rospy.init_node('moveValidityChecker', anonymous=True)
 
     # create subscriber to the filtered board topic
-    filtered_board_sub = rospy.Subscriber('/hanoi/filteredBoardState',FilteredBoard,callbackCheck)
+    filteredBoardSub = rospy.Subscriber('/hanoi/filteredBoardState', FilteredBoard, callbackCheck)
 
     # create subscriber to the missing disk topic
-    missing_disk_sub = rospy.Subscriber('/hanoi/missingDisk', Bool, callbackDeleteColors)
+    missingDiskSub = rospy.Subscriber('/hanoi/missingDisk', Bool, callbackDeleteColors)
 
     #prevents program from exiting, allowing subscribers and publishers to keep operating
     #in our case that is the camera subscriber and the image processing callback function

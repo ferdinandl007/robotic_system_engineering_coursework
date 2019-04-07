@@ -32,7 +32,7 @@ if __name__ == "__main__":
     rospy.init_node('correctMoveAlgorithm', anonymous=True)
 
     # create subscriber to the valid move topic
-    valid_move_sub = rospy.Subscriber('/hanoi/validMove',Int8,callbackMove)
+    validMoveSub = rospy.Subscriber('/hanoi/validMove', Int8, callbackMove)
 
     #prevents program from exiting, allowing subscribers and publishers to keep operating
     #in our case that is the camera subscriber and the image processing callback function

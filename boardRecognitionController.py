@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+import sys
 from sensor_msgs.msg import Image
 from my_baxter.msg import Blobs
 from my_baxter.msg import Disk
@@ -15,14 +16,14 @@ opencv_2 = cv2.__version__.startswith('2')
 
 # initializations
 MAX_NUM_DISKS = 10
-# string_col = sys.argv[1]
+# string_col = rospy.get_param("/hanoi_colors")
 # string_col = 'pink,red,orange,yellow,green,dark_green'
 string_col = 'green,red,yellow'
 hanoi_colors = string_col.split(',')
 latest_complete_bounds = 0  # last position of both bounds
 
 # publlisher to board state (disks)
-boardPub = rospy.Publisher('/hanoi/boardState',Board)
+boardStatePub = rospy.Publisher('/hanoi/boardState', Board)
 
 
 def callbackBlobs(data):
@@ -54,7 +55,7 @@ def callbackBlobs(data):
     for r in hanoi_board.right_tower:
         disk = Disk(r.color,r.size)
         board_msg.right.append(disk)
-    boardPub.publish(board_msg)
+    boardStatePub.publish(board_msg)
 
 
 if __name__ == "__main__":
@@ -63,10 +64,10 @@ if __name__ == "__main__":
     rospy.init_node('boardRecognitionController', anonymous=True)
 
     # create subscriber to board configuration topic
-    board_config_sub = rospy.Subscriber('/hanoi/boardConfiguration', Blobs, callbackBlobs)
+    boardConfigSub = rospy.Subscriber('/hanoi/boardConfiguration', Blobs, callbackBlobs)
 
     # create subscriber to the right hand camera
-    camera_sub = rospy.Subscriber('/cameras2/right_hand_camera/image',Image)
+    cameraSub = rospy.Subscriber('/cameras2/right_hand_camera/image', Image)
 
     #prevents program from exiting, allowing subscribers and publishers to keep operating
     #in our case that is the camera subscriber and the image processing callback function

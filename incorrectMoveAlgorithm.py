@@ -41,7 +41,7 @@ def callbackTimer(event):
     global valid_move,timer_X_started,timerX,wrong_moves
     if valid_move == 3:
         print('Move not corrected. Stopping game')
-        gameRunningPub.publish(0)   # stop game
+        gameRunningPub.publish(3)   # stop game (allow for setup)
         # clear all variables
         timer_X_started = False
         timerX = None

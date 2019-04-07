@@ -80,7 +80,7 @@ def callbackTimerZ(event):
 
 
 def callbackMissing(data):
-    global valid_move,wrong_moves,timer_Z_started
+    global valid_move,timer_Z_started
     valid_move = data.data
 
     # disk is missing and timer to allow to put back VOLUNTARILY has not started
@@ -97,10 +97,10 @@ if __name__ == "__main__":
     rospy.init_node('missingDiskAlgorithm', anonymous=True)
 
     # create subscriber to the valid move topic
-    valid_move_sub = rospy.Subscriber('/hanoi/validMove',Int8,callbackMissing)
+    validMoveSub = rospy.Subscriber('/hanoi/validMove', Int8, callbackMissing)
 
     # create subscriber to the wrong moves topic
-    wrong_moves_sub = rospy.Subscriber('/hanoi/wrongMoves',Int8,callbackWrongMoves)
+    wrongMovesSub = rospy.Subscriber('/hanoi/wrongMoves', Int8, callbackWrongMoves)
 
 
     #prevents program from exiting, allowing subscribers and publishers to keep operating
