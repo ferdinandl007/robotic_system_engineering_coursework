@@ -1,11 +1,3 @@
-# source: https://stackoverflow.com/a/49221643
-# Solve Towers of Hanoi from arbitrary position
-#
-# diskPostions -- the current peg for each disk (0, 1, or 2) in decreasing
-#                 order of size.  This will be modified
-# largestToMove -- move this one and all smaller disks
-# targetPeg -- target peg for disks to move
-#
 
 
 moves = []
